@@ -14,6 +14,12 @@
 
     <script type="text/javascript">
 
+        /*AJAX is a developer's dream, because you can:
+
+        Read data from a web server - after the page has loaded
+        Update a web page without reloading the page
+        Send data to a web server - in the background*/
+
         /*cuando hago $. estoy llamando a funciones particulares de AJAX
         la variable data va a tener el contenido del get del archivo "info.txt"*/
         // $.get("info.txt", function (data) {
@@ -25,15 +31,15 @@
         /*Vamos a usar una funcion más potente, a ésta funcion se le pueden agregar varias,
         por ejemplo done-fail*/
 
-        $.ajax("info.txt").done(function(data){
+        $.ajax("info.txt").done(function (data) {
 
             $("p").html(data);
         })
-        .fail(function(){
+            .fail(function () {
 
-            alert("Could not get data");
+                alert("Could not get data");
 
-        });
+            });
 
     </script>
 </body>
