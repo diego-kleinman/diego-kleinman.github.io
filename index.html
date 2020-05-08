@@ -10,6 +10,8 @@
 
 <body>
 
+    <p></p>
+
     <script type="text/javascript">
 
         /*cuando hago $. estoy llamando a funciones particulares de AJAX
@@ -25,7 +27,7 @@
 
         $.ajax("info.txt").done(function(data){
 
-            alert(data);
+            $("p").html(data);
         })
         .fail(function(){
 
