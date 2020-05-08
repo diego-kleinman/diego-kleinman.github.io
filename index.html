@@ -2,50 +2,36 @@
 
 <head>
 
-    <title>jQuery</title>
+    <title>AJAX</title>
 
-    <!--Se busco en google con "embeded jQuery-->
-    <!--Lo bueno es que esta hosteado por google, no depende de tu servidor, lo malo es que al no depender de tu servidor se puede caer el servicio o romper-->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
-
-    <!--Si no quiero hacer esto descargo Jquery desde la pagina de jquery y tengo una conexion local a jQuery, puedo usarlo sin internet-->
     <script type="text/javascript" src="jquery.js"></script>
 
-    <style>
-        #circle {
-            background-color: green;
-            width: 200;
-            height: 200;
-            border-radius: 50%;
-        }
-    </style>
 </head>
 
 <body>
-    <!--Content-->
-
-    <div id="circle"></div>
 
     <script type="text/javascript">
 
-        $("#circle").click(function () {
+        /*cuando hago $. estoy llamando a funciones particulares de AJAX
+        la variable data va a tener el contenido del get del archivo "info.txt"*/
+        // $.get("info.txt", function (data) {
+        //     alert(data);
+        // });
+        /*Esta funcion tiene algunos problemas, no nos deja hacer nada si el get no resulta
+        exitoso, por ejemplo si el usuario pierde la señal de internet*/
 
-            /*2000 miliseconds
-            Se usan los comandos de js, no es margin-left sino marginLeft
-            simplemente se sacan los "-" y se escribe en cammelCase*/
-            $(this).animate({
-                width: "400px",
-                height: "400px",
-                marginLeft: "100px",
-                marginTop: "100px"
-            }, 2000, function () {
+        /*Vamos a usar una funcion más potente, a ésta funcion se le pueden agregar varias,
+        por ejemplo done-fail*/
 
-                $(this).css("background-color","red");
-            });
+        $.ajax("info.txt").done(function(data){
 
-
+            alert(data);
         })
+        .fail(function(){
 
+            alert("Could not get data");
+
+        });
 
     </script>
 </body>
