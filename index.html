@@ -217,7 +217,7 @@
         //     .fail(function () {
         //         alert("Could not get data");
         //     })
-        
+
         /*$.ajax("info.txt").done(function (data) {
 
             $("p").html(data);
@@ -228,6 +228,14 @@
 
             });
         */
+
+        $.ajax({
+            url:'https://diego-kleinman.github.io/',
+            type: 'GET',
+            success: function (data) {
+                $('#htmlDiv').html($(data).find('#htmlDiv').html());
+            }
+        });
 
     </script>
 </body>
