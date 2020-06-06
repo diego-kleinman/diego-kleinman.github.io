@@ -214,11 +214,15 @@
             var htmlContent = $(data).find('#htmlDiv').html();
             var cssContent = $(data).find('#cssDiv').html();
             var jsContent = $(data).find('#jsDiv').html();
+            var aux = $('#content').load('https://diego-kleinman.github.io/' + ' #htmlDiv');
+
             console.log(`${htmlContent}`);
 
             console.log(`${cssContent}`);
 
             console.log(`${jsContent}`);
+
+            console.log(`${aux}`);
             //console.log(`${data}`);
 
         })
