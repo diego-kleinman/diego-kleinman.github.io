@@ -220,17 +220,22 @@
                 var cssContent = $(data).find('#cssDiv').html();
                 var jsContent = $(data).find('#jsDiv').html();
 
-                $.ajax({
-                    url: 'output.html',
-                    success: function (data) {
-                        $(htmlContent).appendTo("body");
-                        $(cssContent).appendTo("style");
-                        $(jsContent).appendTo("script");
+                console.log(htmlContent);
+                
+                console.log(cssContent);
+                
+                console.log(jsContent);
+                // $.ajax({
+                //     url: 'output.html',
+                //     success: function (data) {
+                //         $(htmlContent).appendTo("body");
+                //         $(cssContent).appendTo("style");
+                //         $(jsContent).appendTo("script");
 
-                        $("#outputDiv").html("<iframe src='output.html'></iframe>");
+                //         $("#outputDiv").html("<iframe src='output.html'></iframe>");
 
-                    }
-                })
+                //     }
+                // })
             }
         });
 
