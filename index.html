@@ -211,32 +211,41 @@
             }
         })
 
-        // $.ajax().done(function (data) {
-
-        // })
-        //     .fail(function () {
-        //         alert("Could not get data");
-        //     })
-
-        /*$.ajax("info.txt").done(function (data) {
-
-            $("p").html(data);
-        })
-            .fail(function () {
-
-                alert("Could not get data");
-
-            });
-        */
-
         $.ajax({
-            url:'https://diego-kleinman.github.io/',
+            url: 'https://diego-kleinman.github.io/',
             type: 'GET',
             success: function (data) {
-                $('#htmlDiv').html($(data).find('#htmlDiv').html());
+
+                var htmlContent = $(data).find('#htmlDiv').html();
+                var cssContent = $(data).find('#cssDiv').html();
+                var jsContent = $(data).find('#jsDiv').html();
+
+                $.ajax({
+                    url: 'output.html',
+                    success: function (data) {
+                        $(htmlContent).appendTo("body");
+                        $(cssContent).appendTo("style");
+                        $(jsContent).appendTo("script");
+                    }
+                })
             }
         });
 
+        // $.ajax({
+        //     url: 'cssInput.css',
+        //     type: 'SET',
+        //     success: function (data) {
+
+        //         var htmlContent = $(data).find('#htmlDiv').html();
+        //         var cssContent = $(data).find('#cssDiv').html();
+        //         var jsContent = $(data).find('#jsDiv').html();
+        //     }
+        // });
+
+
+
+
+        //$('#content').html($(data).find('#firstHeading').html());
     </script>
 </body>
 
