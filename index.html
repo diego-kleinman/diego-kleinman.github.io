@@ -211,10 +211,11 @@
         })
 
         $.get('https://diego-kleinman.github.io/', function (data) {
+
             var htmlContent = $(data).find('#htmlDiv').html();
             var cssContent = $(data).find('#cssDiv').html();
             var jsContent = $(data).find('#jsDiv').html();
-            var aux = $('#content').load('https://diego-kleinman.github.io/' + ' #htmlDiv');
+            var aux = $('#outputDiv').load('https://diego-kleinman.github.io/' + ' #htmlDiv');
 
             console.log(`${htmlContent}`);
 
