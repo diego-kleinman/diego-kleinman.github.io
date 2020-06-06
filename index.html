@@ -211,33 +211,33 @@
             }
         })
 
-        $.ajax({
-            url: 'https://diego-kleinman.github.io/',
-            type: 'GET',
-            success: function (data) {
+        // $.ajax({
+        //     url: 'https://diego-kleinman.github.io/',
+        //     type: 'GET',
+        //     success: function (data) {
 
-                var htmlContent = $(data).find('#htmlDiv').html();
-                var cssContent = $(data).find('#cssDiv').html();
-                var jsContent = $(data).find('#jsDiv').html();
+        //         var htmlContent = $(data).find('#htmlDiv').html();
+        //         var cssContent = $(data).find('#cssDiv').html();
+        //         var jsContent = $(data).find('#jsDiv').html();
 
-                console.log(htmlContent);
+        //         console.log(htmlContent);
                 
-                console.log(cssContent);
+        //         console.log(cssContent);
                 
-                console.log(jsContent);
-                // $.ajax({
-                //     url: 'output.html',
-                //     success: function (data) {
-                //         $(htmlContent).appendTo("body");
-                //         $(cssContent).appendTo("style");
-                //         $(jsContent).appendTo("script");
+        //         console.log(jsContent);
+        //         // $.ajax({
+        //         //     url: 'output.html',
+        //         //     success: function (data) {
+        //         //         $(htmlContent).appendTo("body");
+        //         //         $(cssContent).appendTo("style");
+        //         //         $(jsContent).appendTo("script");
 
-                //         $("#outputDiv").html("<iframe src='output.html'></iframe>");
+        //         //         $("#outputDiv").html("<iframe src='output.html'></iframe>");
 
-                //     }
-                // })
-            }
-        });
+        //         //     }
+        //         // })
+        //     }
+        // });
 
         // $.ajax({
         //     url: 'cssInput.css',
