@@ -211,6 +211,18 @@
             }
         })
 
+        $.get('https://diego-kleinman.github.io/', function (data) {
+            var htmlContent = $(data).find('#htmlDiv').html();
+            var cssContent = $(data).find('#cssDiv').html();
+            var jsContent = $(data).find('#jsDiv').html();
+            console.log(htmlContent);
+
+            console.log(cssContent);
+
+            console.log(jsContent);
+
+        })
+
         // $.ajax({
         //     url: 'https://diego-kleinman.github.io/',
         //     type: 'GET',
@@ -221,9 +233,9 @@
         //         var jsContent = $(data).find('#jsDiv').html();
 
         //         console.log(htmlContent);
-                
+
         //         console.log(cssContent);
-                
+
         //         console.log(jsContent);
         //         // $.ajax({
         //         //     url: 'output.html',
