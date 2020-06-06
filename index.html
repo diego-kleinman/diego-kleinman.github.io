@@ -2,36 +2,223 @@
 
 <head>
 
-    <title>AJAX</title>
+    <title>jQuery Project</title>
 
     <script type="text/javascript" src="jquery.js"></script>
+
+    <script src="jqueryUi/jquery-ui.js"></script>
+
+    <link href="jqueryUi/jquery-ui.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            font-family: helvetica, sans-serif;
+        }
+
+        #toggleBar {
+            border-radius: 5px;
+            background-color: #dedede;
+            height: 50px;
+        }
+
+        #toggleBarText {
+            padding-left: 10px;
+            font-size: 100%;
+            bottom: 3px;
+            width: 40%;
+            float: left;
+            position: relative;
+        }
+
+        .button {
+            margin-top: 5px;
+            background-color: #dedede;
+            height: 40px;
+            border-radius: 7px;
+            border-width: 2px;
+            float: left;
+        }
+
+        .writingDiv {
+            float: left;
+
+        }
+    </style>
 
 </head>
 
 <body>
+    <div id="toggleBar">
+        <div id="toggleBarText">
+            <span>
+                <h3>Code Player</h3>
+            </span>
+        </div>
 
-    <p></p>
+        <div id="buttonContainer">
+
+            <button class="button" id="htmlButton">HTML</button>
+
+            <button class="button" id="cssButton">CSS</button>
+
+            <button class="button" id="jsButton">JavaScript</button>
+
+            <button class="button" id="outputButton">Output</button>
+
+        </div>
+    </div>
+
+    <div class="writingDiv">
+
+        <div contenteditable="true" class="writingDiv" id="htmlDiv"
+            style="background-color: red;border-left: 1px black solid;display: none;">
+        </div>
+
+        <div contenteditable="true" class="writingDiv" id="cssDiv"
+            style="background-color: blue;border-left: 1px black solid;display: none;">
+        </div>
+
+        <div contenteditable="true" class="writingDiv" id="jsDiv"
+            style="background-color: green;border-left: 1px black solid;display: none;">
+        </div>
+
+        <div class="writingDiv" id="outputDiv"
+            style="background-color: grey;border-left: 1px black solid;display: none;">
+        </div>
+
+    </div>
 
     <script type="text/javascript">
 
-        /*AJAX is a developer's dream, because you can:
+        //I substract 22 pixels due to the right scrollBar
+        var windowWidth = window.innerWidth - 22;
+        var windowHeight = window.innerHeight;
 
-        Read data from a web server - after the page has loaded
-        Update a web page without reloading the page
-        Send data to a web server - in the background*/
+        /*This flags are going to tell me if a display is working or not, they will change
+        whenever I touch a button*/
+        var htmlFlag, cssFlag, jsFlag, outputFlag = false;
 
-        /*cuando hago $. estoy llamando a funciones particulares de AJAX
-        la variable data va a tener el contenido del get del archivo "info.txt"*/
-        // $.get("info.txt", function (data) {
-        //     alert(data);
-        // });
-        /*Esta funcion tiene algunos problemas, no nos deja hacer nada si el get no resulta
-        exitoso, por ejemplo si el usuario pierde la señal de internet*/
+        /*This array will contain the id's of displayed divs*/
+        var activeDisplays = [];
 
-        /*Vamos a usar una funcion más potente, a ésta funcion se le pueden agregar varias,
-        por ejemplo done-fail*/
+        $(".writingDiv").css("height", windowHeight);
+        $("button").button();
 
-        $.ajax("info.txt").done(function (data) {
+        function deactivateDisplay(name) {
+            $(name).css("width", 0);
+            $(name).css("display", "none");
+            eraseElement(name);
+        }
+
+        function activateDisplay(name, width) {
+            $(name).css("width", width);
+            $(name).css("display", "inline-block");
+            activeDisplays.push(name);
+        }
+
+
+        //Method that erases an element from the activeDisplaysArray
+        function eraseElement(element) {
+            const indexElim = activeDisplays.indexOf(element);
+            if (indexElim > -1) {
+                activeDisplays.splice(indexElim, 1);
+            }
+        }
+
+        //Funcion que va a fijarse cuantos elementos tiene el array de activeDisplays y en base a eso va a llamar a
+        //la funcion activateDisplay de cada elemento con el window/ length del array
+        function createView(name) {
+            //If no display is active
+            if (activeDisplays.length == 0) {
+                activateDisplay(name, windowWidth);
+            }
+            else {
+                var actualWidth = windowWidth / (activeDisplays.length + 1);
+                for (i = 0; i < activeDisplays.length; i++) {
+                    var aux = activeDisplays[i];
+                    if (aux != name) {
+                        $(aux).css("width", actualWidth);
+                    }
+                }
+                activateDisplay(name, actualWidth);
+            }
+        }
+
+        function adjustView(name) {
+            deactivateDisplay(name);
+            //If any display besides the one I deactivate is active now I wanna resize it
+            if (activeDisplays.length != 0) {
+                var actualWidth = windowWidth / (activeDisplays.length);
+                for (i = 0; i < activeDisplays.length; i++) {
+                    var aux = activeDisplays[i];
+                    if (aux != name) {
+                        $(aux).css("width", actualWidth);
+                    }
+                }
+            }
+        }
+
+        $("#cssButton").click(function () {
+            if (cssFlag) {
+                adjustView("#cssDiv")
+                cssFlag = false;
+            }
+            else {
+                createView("#cssDiv")
+                cssFlag = true;
+            }
+        })
+
+        $("#htmlButton").click(function () {
+            if (htmlFlag) {
+                adjustView("#htmlDiv")
+                htmlFlag = false;
+            }
+            else {
+                createView("#htmlDiv")
+                htmlFlag = true;
+            }
+        })
+
+
+        $("#jsButton").click(function () {
+            if (jsFlag) {
+                adjustView("#jsDiv")
+                jsFlag = false;
+            }
+            else {
+                createView("#jsDiv")
+                jsFlag = true;
+            }
+        })
+
+        $("#outputButton").click(function () {
+            if (outputFlag) {
+                adjustView("#outputDiv")
+                outputFlag = false;
+            }
+            else {
+                createView("#outputDiv")
+                outputFlag = true;
+            }
+        })
+
+        // $.ajax().done(function (data) {
+
+        // })
+        //     .fail(function () {
+        //         alert("Could not get data");
+        //     })
+        
+        /*$.ajax("info.txt").done(function (data) {
 
             $("p").html(data);
         })
@@ -40,6 +227,7 @@
                 alert("Could not get data");
 
             });
+        */
 
     </script>
 </body>
