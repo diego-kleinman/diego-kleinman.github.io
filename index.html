@@ -96,6 +96,10 @@
             style="background-color: grey;border-left: 1px black solid;display: none;">
         </div>
 
+        <div id="loadDiv">
+
+        </div>
+
     </div>
 
     <script type="text/javascript">
@@ -212,6 +216,9 @@
                 outputFlag = true;
             }
         })
+
+        $("#loadDiv").load("https://diego-kleinman.github.io/ #htmlText");
+        console.log($("#loadDiv").html());
 
         $.ajax({
             type: "GET",
