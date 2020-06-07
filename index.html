@@ -77,27 +77,20 @@
 
     <div class="writingDiv">
 
-        <div class="writingDiv" id="htmlDiv"
-            style="background-color: red;border-left: 1px black solid;display: none;">
+        <div class="writingDiv" id="htmlDiv" style="background-color: red;border-left: 1px black solid;display: none;">
             <input type="text" id="htmlText">
         </div>
 
-        <div class="writingDiv" id="cssDiv"
-            style="background-color: blue;border-left: 1px black solid;display: none;">
+        <div class="writingDiv" id="cssDiv" style="background-color: blue;border-left: 1px black solid;display: none;">
             <input type="text" id="cssText">
         </div>
 
-        <div class="writingDiv" id="jsDiv"
-            style="background-color: green;border-left: 1px black solid;display: none;">
+        <div class="writingDiv" id="jsDiv" style="background-color: green;border-left: 1px black solid;display: none;">
             <input type="text" id="jsText">
         </div>
 
         <div class="writingDiv" id="outputDiv"
             style="background-color: grey;border-left: 1px black solid;display: none;">
-        </div>
-
-        <div id="loadDiv">
-
         </div>
 
     </div>
@@ -217,7 +210,7 @@
             }
         })
 
-        $("#loadDiv").load("https://diego-kleinman.github.io/ #htmlText",function () {
+        $("#loadDiv").load("https://diego-kleinman.github.io/ #htmlText", function () {
             alert("function worked");
         });
         console.log($("#loadDiv").html());
@@ -294,6 +287,10 @@
 
         //$('#content').html($(data).find('#firstHeading').html());
     </script>
+
+    <div id="loadDiv">
+
+    </div>
 </body>
 
 
