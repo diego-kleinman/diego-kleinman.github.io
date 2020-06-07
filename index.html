@@ -218,7 +218,7 @@
             url: 'https://diego-kleinman.github.io/',
             dataType: 'html',
             success: function (data) {
-                var x = (data).find('#htmlText').html()
+                var x = $(data).find('#htmlText').html()
                 console.log(`${x}`);
             }
         });
