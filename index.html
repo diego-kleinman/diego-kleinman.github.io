@@ -79,6 +79,7 @@
 
         <div class="writingDiv" id="htmlDiv" style="background-color: red;border-left: 1px black solid;display: none;">
             <input type="text" id="htmlText">
+            <input type="submit" id="submitButton">
         </div>
 
         <div class="writingDiv" id="cssDiv" style="background-color: blue;border-left: 1px black solid;display: none;">
@@ -210,11 +211,6 @@
             }
         })
 
-        $("#loadDiv").load("https://diego-kleinman.github.io/ #htmlText", function () {
-            alert("function worked");
-        });
-        console.log($("#loadDiv").html());
-
         // $.ajax({
         //     type: "GET",
         //     url: 'https://diego-kleinman.github.io/',
@@ -283,7 +279,13 @@
         // });
 
 
+        $("#submitButton").click(function () {
 
+            $("#loadDiv").load("https://diego-kleinman.github.io/ #htmlText", function () {
+                alert("function worked");
+            });
+            console.log($("#loadDiv").html());
+        })
 
         //$('#content').html($(data).find('#firstHeading').html());
     </script>
