@@ -213,23 +213,33 @@
             }
         })
 
-        $.get('https://diego-kleinman.github.io/', function (data) {
+        $.ajax({
+            type: "GET",
+            url: 'https://diego-kleinman.github.io/',
+            dataType: 'html',
+            success: function (data) {
+                var x = (data).find('#htmlText').html()
+                console.log(`${x}`);
+            }
+        });
 
-            var htmlContent = $(data).find('#htmlDiv').html();
-            var cssContent = $(data).find('#cssDiv').html();
-            var jsContent = $(data).find('#jsDiv').html();
-            var aux = $('#outputDiv').load('https://diego-kleinman.github.io/' + ' #htmlDiv');
+        // $.get('https://diego-kleinman.github.io/', function (data) {
 
-            console.log(`${htmlContent}`);
+        //     var htmlContent = $(data).filter('#htmlDiv').html();
+        //     var cssContent = $(data).find('#cssDiv').html();
+        //     var jsContent = $(data).find('#jsDiv').html();
+        //     var aux = $('#outputDiv').load('https://diego-kleinman.github.io/' + ' #htmlDiv');
 
-            console.log(`${cssContent}`);
+        //     console.log(`${htmlContent}`);
 
-            console.log(`${jsContent}`);
+        //     console.log(`${cssContent}`);
 
-            console.log(`${aux}`);
-            //console.log(`${data}`);
+        //     console.log(`${jsContent}`);
 
-        })
+        //     console.log(`${aux}`);
+        //     //console.log(`${data}`);
+
+        // })
 
         // $.ajax({
         //     url: 'https://diego-kleinman.github.io/',
