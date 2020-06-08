@@ -211,15 +211,15 @@
             }
         })
 
-        // $.ajax({
-        //     type: "GET",
-        //     url: 'https://diego-kleinman.github.io/',
-        //     dataType: 'html',
-        //     success: function (data) {
-        //         var x = $(data).find('#htmlText').html()
-        //         console.log(`${x}`);
-        //     }
-        // });
+        $.ajax({
+            type: "GET",
+            url: 'https://diego-kleinman.github.io/',
+            dataType: 'html',
+            success: function (data) {
+                var x = $(data).filter('#htmlText').html()
+                console.log(`${x}`);
+            }
+        });
 
         // $.get('https://diego-kleinman.github.io/', function (data) {
 
