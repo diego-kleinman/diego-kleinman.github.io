@@ -1,215 +1,156 @@
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
+  <meta charset="utf-8">
 
-    <title>jQuery Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <script type="text/javascript" src="jquery.js"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <script src="jqueryUi/jquery-ui.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="jqueryUi/jquery-ui.css" rel="stylesheet">
+  <title>ProSoft</title>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+    body {
+      position: relative;
+    }
 
-    <style>
-        body,
-        html {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-            font-family: helvetica, sans-serif;
-        }
+    #divServicios {
+      padding-top: 55px;
+    }
 
-        #toggleBar {
-            border-radius: 5px;
-            background-color: #dedede;
-            height: 50px;
-        }
+    #divPortafolio {
+      padding-top: 55px;
+    }
 
-        #toggleBarText {
-            padding-left: 10px;
-            font-size: 100%;
-            bottom: 3px;
-            width: 40%;
-            float: left;
-            position: relative;
-        }
+    #divClientes {
+      padding-top: 55px;
+    }
 
-        .button {
-            margin-top: 5px;
-            background-color: #dedede;
-            height: 40px;
-            border-radius: 7px;
-            border-width: 2px;
-            float: left;
-        }
+    #divNosotros {
+      padding-top: 55px;
+    }
 
-        .writingDiv {
-            float: left;
+    #divContacto {
+      padding-top: 55px;
+    }
 
-        }
-    </style>
 
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .fa {
+      margin-right: 5px;
+    }
+
+    .jumbotron {
+      margin-top: 55px;
+      height: 800px;
+      line-height: 1.8;
+      font-family: "Work Sans", sans-serif;
+      padding-top: 230px;
+      background-image: url('5.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      /* background-position: center center; */
+    }
+
+    .lead {
+      line-height: 2.5;
+    }
+  </style>
 </head>
 
-<body>
-    <div id="toggleBar">
-        <div id="toggleBarText">
-            <span>
-                <h3>Code Player</h3>
-            </span>
-        </div>
+<!-- Le pongo un offset de 55px porque es lo que ocupa la propia navBar, para que mida las
+secciones desde 55px hacia abajo -->
 
-        <div id="buttonContainer">
+<body data-spy="scroll" data-target="#navbarCustom" data-offset="55">
 
-            <button class="button" id="htmlButton">HTML</button>
+  <nav id="navbarCustom" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i>ProSoft</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-            <button class="button" id="cssButton">CSS</button>
-
-            <button class="button" id="jsButton">JavaScript</button>
-
-            <button class="button" id="outputButton">Output</button>
-
-        </div>
-    </div>
-
-    <div class="writingDiv">
-
-        <div contenteditable="true" class="writingDiv" id="htmlDiv" style="background-color: red;border-left: 1px black solid;display: none;">
-        </div>
-
-        <div contenteditable="true" class="writingDiv" id="cssDiv" style="background-color: blue;border-left: 1px black solid;display: none;">
-        </div>
-
-        <div contenteditable="true" class="writingDiv" id="jsDiv" style="background-color: green;border-left: 1px black solid;display: none;">
-        </div>
-
-        <div class="writingDiv" id="outputDiv"
-            style="background-color: grey;border-left: 1px black solid;display: none;">
-        </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" id="inicio" href="#uno"><i class="fa fa-home"></i>Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="servicios" href="#dos"><i class="fa fa-wrench"></i>Servicios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="portafolio" href="#tres"><i class="fa fa-briefcase"></i>Portafolio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="clientes" href="#cuatro"><i class="fa fa-users"></i>Clientes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="nosotros" href="#cinco"><i class="fa fa-info"></i>Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contacto" href="#seis"><i class="fa fa-envelope"></i>Contacto</a>
+        </li>
+      </ul>
 
     </div>
+  </nav>
 
-    <script type="text/javascript">
-
-        //I substract 22 pixels due to the right scrollBar
-        var windowWidth = window.innerWidth - 22;
-        var windowHeight = window.innerHeight;
-
-        /*This flags are going to tell me if a display is working or not, they will change
-        whenever I touch a button*/
-        var htmlFlag, cssFlag, jsFlag, outputFlag = false;
-
-        /*This array will contain the id's of displayed divs*/
-        var activeDisplays = [];
-
-        $(".writingDiv").css("height", windowHeight);
-        $("button").button();
-
-        function deactivateDisplay(name) {
-            $(name).css("width", 0);
-            $(name).css("display", "none");
-            eraseElement(name);
-        }
-
-        function activateDisplay(name, width) {
-            $(name).css("width", width);
-            $(name).css("display", "inline-block");
-            activeDisplays.push(name);
-        }
+  <h4 id="uno"></h4>
+  <div class="jumbotron text-center ">
+    <h1 class="display-3 ">Somos especialistas en software a medida</h1>
+    <h2>¿Por qué elegirnos? </h2>
+    <p class="lead">
+      <i class="fa fa-check"></i> Generamos fuertes lazos con nuestros clientes <i class="fa fa-arrow-right"></i>Esto
+      nos permite entregar productos de alta calidad <br>
+      <i class="fa fa-check"></i> Productos fuertemente especializados <i class="fa fa-arrow-right"></i>Nos ajustamos a
+      lo que necesites <br>
+      <i class="fa fa-check"></i> El valor humano es nuestra prioridad <i class="fa fa-arrow-right"></i>Trabajadores
+      fuertemente alineados a nuestros valores empresariales <br>
+      <hr class="my-4">
+    <p><strong>¡En ProSoft nos ponemos la camiseta de tu equipo!</strong><br> ¿Te interesa trabajar juntos?</p>
+    <a class="btn btn-primary btn-lg" href="#divContacto" role="button"><i class="fa fa-envelope"></i> CONTACTANOS</a>
+  </div>
 
 
-        //Method that erases an element from the activeDisplaysArray
-        function eraseElement(element) {
-            const indexElim = activeDisplays.indexOf(element);
-            if (indexElim > -1) {
-                activeDisplays.splice(indexElim, 1);
-            }
-        }
-
-        //Funcion que va a fijarse cuantos elementos tiene el array de activeDisplays y en base a eso va a llamar a
-        //la funcion activateDisplay de cada elemento con el window/ length del array
-        function createView(name) {
-            //If no display is active
-            if (activeDisplays.length == 0) {
-                activateDisplay(name, windowWidth);
-            }
-            else {
-                var actualWidth = windowWidth / (activeDisplays.length + 1);
-                for (i = 0; i < activeDisplays.length; i++) {
-                    var aux = activeDisplays[i];
-                    if (aux != name) {
-                        $(aux).css("width", actualWidth);
-                    }
-                }
-                activateDisplay(name, actualWidth);
-            }
-        }
-
-        function adjustView(name) {
-            deactivateDisplay(name);
-            //If any display besides the one I deactivate is active now I wanna resize it
-            if (activeDisplays.length != 0) {
-                var actualWidth = windowWidth / (activeDisplays.length);
-                for (i = 0; i < activeDisplays.length; i++) {
-                    var aux = activeDisplays[i];
-                    if (aux != name) {
-                        $(aux).css("width", actualWidth);
-                    }
-                }
-            }
-        }
-
-        $("#cssButton").click(function () {
-            if (cssFlag) {
-                adjustView("#cssDiv")
-                cssFlag = false;
-            }
-            else {
-                createView("#cssDiv")
-                cssFlag = true;
-            }
-        })
-
-        $("#htmlButton").click(function () {
-            if (htmlFlag) {
-                adjustView("#htmlDiv")
-                htmlFlag = false;
-            }
-            else {
-                createView("#htmlDiv")
-                htmlFlag = true;
-            }
-        })
+  <h4 id="dos"></h4>
+  <div id="divServicios" style="background-color: blue; height: 1000px;">HOLA</div>
+  <h4 id="tres"></h4>
+  <div id="divPortafolio" style="background-color: green; height: 1000px;">HOLA</div>
+  <h4 id="cuatro"></h4>
+  <div id="divClientes" style="background-color: yellow; height: 1000px;">HOLA</div>
+  <h4 id="cinco"></h4>
+  <div id="divNosotros" style="background-color: brown; height: 1000px;">HOLA</div>
+  <h4 id="seis"></h4>
+  <div id="divContacto" style="background-color: gray; height: 1000px;">HOLA</div>
 
 
-        $("#jsButton").click(function () {
-            if (jsFlag) {
-                adjustView("#jsDiv")
-                jsFlag = false;
-            }
-            else {
-                createView("#jsDiv")
-                jsFlag = true;
-            }
-        })
 
-        $("#outputButton").click(function () {
-            if (outputFlag) {
-                adjustView("#outputDiv")
-                outputFlag = false;
-            }
-            else {
-                createView("#outputDiv")
-                outputFlag = true;
-            }
-        })
 
-    </script>
+
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+
 
 </body>
-
 
 </html>
