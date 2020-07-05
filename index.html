@@ -15,59 +15,34 @@
   <title>ProSoft</title>
 
   <style>
-    body {
-      position: relative;
-      width: min-content;
+    @media only screen and (max-width: 430px) {
+      html {
+        scroll-behavior: smooth;
+        position: relative;
+        display: inline-block;
+        width: min-content;
+      }
     }
 
-    #divServicios {
+    @media only screen and (min-width: 600px) {
+      html {
+        scroll-behavior: smooth;
+        position: relative;
+        display: inline-block;
+      }
+    }
+
+    #divServicios, #divPortafolio, #divClientes, #divNosotros, #divContacto {
       padding-top: 55px;
-    }
-
-    #divPortafolio {
-      padding-top: 55px;
-    }
-
-    #divClientes {
-      padding-top: 55px;
-    }
-
-    #divNosotros {
-      padding-top: 55px;
-    }
-
-    #divContacto {
-      padding-top: 55px;
-    }
-
-
-
-    html {
-      scroll-behavior: smooth;
     }
 
     .fa {
       margin-right: 5px;
     }
 
-    /* .jumbotron {
-      margin-top: 55px;
-      height: 800px;
-      line-height: 1.8;
-      font-family: "Work Sans", sans-serif;
-      padding-top: 230px;
-      background-image: url('5.jpg');
-      background-repeat: no-repeat;
-      background-size: cover;
-      display: flexbox;
-      
-      /* background-position: center center; 
-    } */
-
     .jumbotron {
       margin-top: 55px;
       line-height: 1.8;
-      padding-top: 230px;
       font-family: "Work Sans", sans-serif;
       background: url('5.jpg') fixed center no-repeat;
       background-size: cover;
@@ -145,8 +120,6 @@ secciones desde 55px hacia abajo -->
   <div id="divNosotros" style="background-color: brown; height: 1000px;">HOLA</div>
   <h4 id="seis"></h4>
   <div id="divContacto" style="background-color: gray; height: 1000px;">HOLA</div>
-
-
 
 
 
