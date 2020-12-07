@@ -1,8 +1,6 @@
 let ctx;
 window.onload = () => {
-    let canvas = document.getElementById('gameContainer')
-    // alert(window.innerWidth)
-    // alert(window.innerHeight)
+    canvas = document.getElementById('gameContainer')
     if (canvas.getContext) {
         ctx = canvas.getContext('2d')
         initialize(ctx)
@@ -12,7 +10,7 @@ window.onload = () => {
         alert("Sorry, due to your browser being not compatible you won't be able to play")
     }
 }
-//-----------------------------------------------------------------------GAME OBJECT VALUES-------------------------------------------------------------------------------
+//-----------------------------------------------------------------------GAME VALUES-------------------------------------------------------------------------------------
 
 let canvas = document.getElementById("gameContainer")
 
@@ -29,37 +27,40 @@ let canvasObj = {
 }
 
 let ball = {
-    "x": 500,
-    "y": 250,
+    "x": null,
+    "y": null,
     "radius": 4,
     "vx": 5,
     "vy": -3,
 }
 
-let playVelocity = 5
-let playersVelocity = 5
-let pointsToWin = 5
-let topLimit = 2 * ball["radius"]
-let bottomLimit = canvasObj["height"] - 3*ball["radius"]
-
 let players = {
     "width": 10,
     "height": 60,
-    "separationFromCorners": 10
+    "separationFromCorners": 10,
 }
 
 let player1 = {
     "x": players["separationFromCorners"],
     "y": (canvasObj["height"] / 2) - players["height"] / 2,
-    "width": players["width"],
-    "height": players["height"]
 }
 
 let player2 = {
     "x": canvasObj["width"] - players["width"] - players["separationFromCorners"],
     "y": (canvasObj["height"] / 2) - players["height"] / 2,
-    "width": players["width"],
-    "height": players["height"]
+}
+
+let settings = {
+    "playVelocity": 3,
+    "playersVelocity": 5,
+    "pointsToWin": 5,
+    "firstTouch": true,
+    "maxBottom": canvasObj["height"] - players["height"] - 5,
+    "leftLimit": player1["x"] + players["width"] + ball["vx"] + ball["radius"],
+    "rightLimit": canvasObj["width"] - (canvasObj["width"] - player2["x"] + 2),
+    "bottomLimit": canvasObj["height"],
+    "topLimit": 0,
+    "velocityFactor": canvasObj["width"] / 2 - 2 * ball["radius"] - (canvasObj["width"] - player2["x"] + 2)
 }
 
 let score = {
@@ -67,108 +68,128 @@ let score = {
     "player2": 0,
 }
 
-let firstTouch = {
-    "first": true
+//-----------------------------------------------------------------------AUXILIARY FUNCTIONS------------------------------------------------------------------------------------
+const clearPlayer = (ctx, player) => {
+    ctx.clearRect(player["x"], player["y"], players["width"], players["height"])
 }
 
-let rightLimit = canvasObj["width"] - (canvasObj["width"] - player2["x"]) + ball["radius"]
-let leftLimit = player1["x"] + player1["width"] - ball["radius"]
-
-//-----------------------------------------------------------------------INITIALIZING ROUND------------------------------------------------------------------------------------
-const initialize = (ctx) => {
-    draw(ctx, player1["x"], player1["y"], player1["width"], player1["height"])
-    draw(ctx, player2["x"], player2["y"], player2["width"], player2["height"])
+const clearBall = (ctx) => {
     ctx.clearRect(ball["x"] - ball["radius"] - 1, ball["y"] - ball["radius"] - 1, ball["radius"] * 2 + 2, ball["radius"] * 2 + 2)
-    ball["x"] = canvasObj["width"]/2
-    ball["y"] = Math.random() * (canvasObj["height"]*0.8 - canvasObj["height"]*0.2) + canvasObj["height"]*0.2;
-    ball["vy"] = (Math.random() * 2 * (playVelocity)) - playVelocity
-    aux = Math.random()
-    if (aux > 0.5) {
-        ball["vx"] = playVelocity
-    }
-    else {
-        ball["vx"] = -playVelocity
-    }
+}
+
+const drawPlayer = (ctx, player) => {
+    draw(ctx, player["x"], player["y"], players["width"], players["height"])
+}
+
+const drawBall = (ctx) => {
     ctx.beginPath();
     ctx.arc(ball["x"], ball["y"], ball["radius"], 0, Math.PI * 2);
     ctx.closePath();
     ctx.fill()
-    firstTouch["first"] = true
 }
-
-//-----------------------------------------------------------------------CONTROLLING GAME STATE------------------------------------------------------------------------------
 
 const draw = (ctx, x, y, wid, len) => {
     ctx.fillStyle = 'rgb(0, 0, 0)'
     ctx.fillRect(x, y, wid, len)
 }
 
-const moveBall = (ctx) => {
-    ctx.clearRect(ball["x"] - ball["radius"] - 1, ball["y"] - ball["radius"] - 1, ball["radius"] * 2 + 2, ball["radius"] * 2 + 2)
-    let newX = ball["x"] + ball["vx"]
-    let newY = ball["y"] + ball["vy"]
-    ball["x"] = newX
-    ball["y"] = newY
-    ctx.beginPath();
-    ctx.arc(ball["x"], ball["y"], ball["radius"], 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.fill()
+const initialize = (ctx) => {
+    drawPlayer(ctx, player1)
+    drawPlayer(ctx, player2)
+    throwBall(ctx)
 }
 
-const clearPlayer = (ctx, player) => {
-    ctx.clearRect(player["x"], player["y"], player["width"], player["height"])
+const restart = (ctx) => {
+    clearPlayer(ctx, player1)
+    clearPlayer(ctx, player2)
+    player1["y"] = (canvasObj["height"] / 2) - players["height"] / 2
+    player2["y"] = (canvasObj["height"] / 2) - players["height"] / 2
+    initialize(ctx)
+}
+
+const throwBall = (ctx) => {
+    clearBall(ctx)
+    randomizeBall(ctx)
+    drawBall(ctx)
+    settings["firstTouch"] = true
+}
+
+const randomizeBall = (ctx) => {
+    ball["x"] = canvasObj["width"] / 2
+    ball["y"] = Math.random() * (canvasObj["height"] * 0.7 - canvasObj["height"] * 0.3) + canvasObj["height"] * 0.3;
+    ball["vy"] = (Math.random() * 2 * (settings["playVelocity"])) - settings["playVelocity"]
+    aux = Math.random()
+    if (aux > 0.5) {
+        ball["vx"] = settings["playVelocity"]
+    }
+    else {
+        ball["vx"] = -settings["playVelocity"]
+    }
+}
+
+const moveBall = (ctx) => {
+    clearBall(ctx)
+    ball["x"] = ball["x"] + ball["vx"]
+    ball["y"] = ball["y"] + ball["vy"]
+    drawBall(ctx)
+}
+
+const movePlayer = (ctx,player,velocity) => {
+    clearPlayer(ctx, player)
+    player["y"] = player["y"] + velocity
+    drawPlayer(ctx,player)
 }
 
 const movePlayers = (ctx) => {
-    
-    if (player1["y"] <= canvasObj["height"] - player2["height"] - 5) {
+    if (player1["y"] <= settings["maxBottom"]) {
         if (keys["ArrowDown"]) {
-            let newY = player1["y"] + playersVelocity
-            clearPlayer(ctx, player1)
-            player1["y"] = newY
-            draw(ctx, player1["x"], player1["y"], player1["width"], player1["height"])
+            movePlayer(ctx,player1,settings["playersVelocity"])
         }
     }
     if (player1["y"] >= 0) {
         if (keys["ArrowUp"]) {
-            let newY2 = player1["y"] - playersVelocity
-            clearPlayer(ctx, player1)
-            player1["y"] = newY2
-            draw(ctx, player1["x"], player1["y"], player1["width"], player1["height"])
+            movePlayer(ctx,player1,-settings["playersVelocity"])
         }
     }
-    if (player2["y"] <= canvasObj["height"] - player2["height"] - 5) {
+    if (player2["y"] <= settings["maxBottom"]) {
         if (keys["s"]) {
-            let newY3 = player2["y"] + playersVelocity
-            clearPlayer(ctx, player2)
-            player2["y"] = newY3
-            draw(ctx, player2["x"], player2["y"], player2["width"], player2["height"])
+            movePlayer(ctx,player2,settings["playersVelocity"])
         }
     }
     if (player2["y"] >= 0) {
         if (keys["w"]) {
-            let newY4 = player2["y"] - playersVelocity
-            clearPlayer(ctx, player2)
-            player2["y"] = newY4
-            draw(ctx, player2["x"], player2["y"], player2["width"], player2["height"])
+            movePlayer(ctx,player2,-settings["playersVelocity"])
         }
     }
 }
 
+const resetScores = () => {
+    score["player1"] = 0
+    score["player2"] = 0
+}
+
+const actualizeScore = (ctx, player) => {
+    score[player]++
+    document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
+}
+
+
+//-----------------------------------------------------------------------CONTROLLING GAME STATE------------------------------------------------------------------------------
+
 const topHitting = (limit) => {
-    return (limit <= topLimit)
+    return (limit <= settings["topLimit"])
 }
 
 const bottomHitting = (limit) => {
-    return (limit >= bottomLimit)
+    return (limit >= settings["bottomLimit"])
 }
 
 const player1Hitting = (limit) => {
-    return (ball["y"] + ball["radius"] >= (player1["y"]) && ball["y"] <= (player1["y"] + player1["height"]) && (limit <= leftLimit))
+    return (ball["y"] + ball["radius"] >= (player1["y"]) && ball["y"] <= (player1["y"] + players["height"]) && (limit <= settings["leftLimit"]))
 }
 
 const player2Hitting = (limit) => {
-    return (ball["y"] + ball["radius"] >= (player2["y"]) && ball["y"] <= (player2["y"] + player2["height"]) && (limit >= rightLimit))
+    return (ball["y"] + ball["radius"] >= (player2["y"]) && ball["y"] <= (player2["y"] + players["height"]) && (limit >= settings["rightLimit"]))
 }
 
 const rightGoal = () => {
@@ -178,26 +199,14 @@ const rightGoal = () => {
 const leftGoal = () => {
     return (ball["x"]) < players["separationFromCorners"]
 }
-
-const resetScores = () => {
-    score["player1"] = 0
-    score["player2"] = 0
-}
-
-const actualizeScore = (ctx,player) => {
-    score[player]++
-    document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
-    initialize(ctx)
-}
-
 //-----------------------------------------------------------------------EXECUTES IN 60FPS-------------------------------------------------------------------------------
 const play = (ctx) => {
     setInterval(() => {
-        if (score["player1"] < pointsToWin && score["player2"] < pointsToWin) {
-            let ballRightLimit = ball["x"] + 2 * ball["radius"] + ball["vx"]
-            let ballLeftLimit = ball["x"] - 2 * ball["radius"] + ball["vx"]
-            let ballTopLimit = ball["y"]
-            let ballBottomLimit = ball["y"]
+        if (score["player1"] < settings["pointsToWin"] && score["player2"] < settings["pointsToWin"]) {
+            let ballRightLimit = ball["x"] + 2 * ball["radius"] + 2
+            let ballLeftLimit = ball["x"] - 2
+            let ballTopLimit = ball["y"] - 2
+            let ballBottomLimit = ball["y"] + 2 * ball["radius"] + 2
 
             if (bottomHitting(ballBottomLimit)) {
                 ball["vy"] = -ball["vy"]
@@ -208,9 +217,10 @@ const play = (ctx) => {
 
             if (ball["vx"] > 0) {
                 if (player2Hitting(ballRightLimit)) {
-                    if (firstTouch["first"]) {
+                    //alert("hit")
+                    if (settings["firstTouch"]) {
                         ball["vx"] = -2 * ball["vx"]
-                        firstTouch["first"] = false
+                        settings["firstTouch"] = false
                     }
                     else {
                         ball["vx"] = -ball["vx"]
@@ -220,15 +230,17 @@ const play = (ctx) => {
                     moveBall(ctx)
                     if (rightGoal()) {
                         //IT WAS PLAYER1 GOAL, SET SCOREBOARD AND THROW ANOTHER BALL
-                        actualizeScore(ctx,"player1")
+                        actualizeScore(ctx, "player1")
+                        initialize(ctx)
                     }
                 }
             }
             if (ball["vx"] < 0) {
                 if (player1Hitting(ballLeftLimit)) {
-                    if (firstTouch["first"]) {
+                    //alert("hit")
+                    if (settings["firstTouch"]) {
                         ball["vx"] = -2 * ball["vx"]
-                        firstTouch["first"] = false
+                        settings["firstTouch"] = false
                     }
                     else {
                         ball["vx"] = -ball["vx"]
@@ -238,14 +250,15 @@ const play = (ctx) => {
                     moveBall(ctx)
                     if (leftGoal()) {
                         //IT WAS PLAYER2 GOAL, SET SCOREBOARD AND THROW ANOTHER BALL
-                        actualizeScore(ctx,"player2")
+                        actualizeScore(ctx, "player2")
+                        initialize(ctx)
                     }
                 }
             }
             movePlayers(ctx)
         }
         else {
-            if (score["player1"] == pointsToWin) {
+            if (score["player1"] == settings["pointsToWin"]) {
                 document.getElementById("score").innerHTML = "Player 1 won"
             }
             else {
@@ -297,34 +310,34 @@ document.addEventListener('keyup', (event) => {
 })
 
 document.getElementById("restartButton").addEventListener('click', () => {
-    initialize(ctx)
+    restart(ctx)
     resetScores()
     document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
 })
 
 document.getElementById("slow").addEventListener('click', () => {
-    playVelocity = 2
+    settings["playVelocity"] = settings["velocityFactor"] * 0.01
     initialize(ctx)
     resetScores()
     document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
 })
 
 document.getElementById("medium").addEventListener('click', () => {
-    playVelocity = 5
+    settings["playVelocity"] = settings["velocityFactor"] * 0.02
     initialize(ctx)
     resetScores()
     document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
 })
 
 document.getElementById("fast").addEventListener('click', () => {
-    playVelocity = 7
+    settings["playVelocity"] = settings["velocityFactor"] * 0.025
     initialize(ctx)
     resetScores()
     document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
 })
 
 document.getElementById("insane").addEventListener('click', () => {
-    playVelocity = 10
+    settings["playVelocity"] = settings["velocityFactor"] * 0.04
     initialize(ctx)
     resetScores()
     document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
