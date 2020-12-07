@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'pongFont';
+    src: url('font.ttf');
+}
+
+body{
+    font-size: 50px;
+    position: relative;
+}
+
+button{
+    font-size: 20px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: black;
+    box-shadow: 2px 2px 2px black;
+    font-family: 'pongFont', sans-serif;
+    padding-right: 5;
+}
+
+#buttonContainter{
+    margin-left: 840px;
+}
+
+.text{
+    text-align: center;
+    color: red;
+    text-shadow: 2px 2px black;
+    font-family: 'pongFont', sans-serif;
+}
+
+#title {
+    margin-right: 250px;
+    text-align: center;
+    padding-top: 40px;
+}
+
+#scoreBar {
+    font-size: 50px;
+    margin-right: 200px;
+}
+
+#gameContainer {
+    background-color: red;
+    margin-left: 250px;
+    margin-top: 60px;
+    border-width: 4px;
+    border-style: solid;
+    border-color: black;
+    box-shadow: 5px 5px 5px black;
+}
