@@ -14,6 +14,7 @@ window.onload = () => {
 
 let canvas = document.getElementById("gameContainer")
 
+//Object to control keys pressed
 let keys = {
     "ArrowUp": false,
     "ArrowDown": false,
@@ -34,25 +35,29 @@ let ball = {
     "vy": -3,
 }
 
+//Common attributes among players
 let players = {
     "width": 10,
     "height": 60,
     "separationFromCorners": 10,
 }
 
+//Left player
 let player1 = {
     "x": players["separationFromCorners"],
     "y": (canvasObj["height"] / 2) - players["height"] / 2,
 }
 
+//Right player
 let player2 = {
     "x": canvasObj["width"] - players["width"] - players["separationFromCorners"],
     "y": (canvasObj["height"] / 2) - players["height"] / 2,
 }
 
+//Settings for the game
 let settings = {
     "playVelocity": 3,
-    "playersVelocity": 5,
+    "playersVelocity": 4,
     "pointsToWin": 5,
     "firstTouch": true,
     "maxBottom": canvasObj["height"] - players["height"] - 5,
@@ -60,7 +65,7 @@ let settings = {
     "rightLimit": canvasObj["width"] - (canvasObj["width"] - player2["x"] + 2),
     "bottomLimit": canvasObj["height"],
     "topLimit": 0,
-    "velocityFactor": canvasObj["width"] / 2 - 2 * ball["radius"] - (canvasObj["width"] - player2["x"] + 2)
+    "velocityFactor": (canvasObj["width"] / 2 - 2 * ball["radius"] - (canvasObj["width"] - player2["x"] + 2)) * 0.5
 }
 
 let score = {
@@ -109,14 +114,15 @@ const restart = (ctx) => {
 
 const throwBall = (ctx) => {
     clearBall(ctx)
-    randomizeBall(ctx)
+    randomizeBall()
     drawBall(ctx)
     settings["firstTouch"] = true
 }
 
-const randomizeBall = (ctx) => {
+//Randomize the ball angle and "y" position, it´s used to throw the ball after each point
+const randomizeBall = () => {
     ball["x"] = canvasObj["width"] / 2
-    ball["y"] = Math.random() * (canvasObj["height"] * 0.7 - canvasObj["height"] * 0.3) + canvasObj["height"] * 0.3;
+    ball["y"] = Math.random() * (canvasObj["height"] * 0.6 - canvasObj["height"] * 0.4) + canvasObj["height"] * 0.4;
     ball["vy"] = (Math.random() * 2 * (settings["playVelocity"])) - settings["playVelocity"]
     aux = Math.random()
     if (aux > 0.5) {
@@ -134,31 +140,31 @@ const moveBall = (ctx) => {
     drawBall(ctx)
 }
 
-const movePlayer = (ctx,player,velocity) => {
+const movePlayer = (ctx, player, velocity) => {
     clearPlayer(ctx, player)
     player["y"] = player["y"] + velocity
-    drawPlayer(ctx,player)
+    drawPlayer(ctx, player)
 }
 
 const movePlayers = (ctx) => {
     if (player1["y"] <= settings["maxBottom"]) {
         if (keys["ArrowDown"]) {
-            movePlayer(ctx,player1,settings["playersVelocity"])
+            movePlayer(ctx, player1, settings["playersVelocity"])
         }
     }
     if (player1["y"] >= 0) {
         if (keys["ArrowUp"]) {
-            movePlayer(ctx,player1,-settings["playersVelocity"])
+            movePlayer(ctx, player1, -settings["playersVelocity"])
         }
     }
     if (player2["y"] <= settings["maxBottom"]) {
         if (keys["s"]) {
-            movePlayer(ctx,player2,settings["playersVelocity"])
+            movePlayer(ctx, player2, settings["playersVelocity"])
         }
     }
     if (player2["y"] >= 0) {
         if (keys["w"]) {
-            movePlayer(ctx,player2,-settings["playersVelocity"])
+            movePlayer(ctx, player2, -settings["playersVelocity"])
         }
     }
 }
@@ -168,14 +174,14 @@ const resetScores = () => {
     score["player2"] = 0
 }
 
-const actualizeScore = (ctx, player) => {
+const actualizeScore = (player) => {
     score[player]++
     document.getElementById("score").innerHTML = score["player1"] + " / " + score["player2"]
 }
 
 
 //-----------------------------------------------------------------------CONTROLLING GAME STATE------------------------------------------------------------------------------
-
+// This functions are in charge of controlling if the ball is hitting the top or bottom wall, hitting a player, or scoring a goal
 const topHitting = (limit) => {
     return (limit <= settings["topLimit"])
 }
@@ -200,14 +206,19 @@ const leftGoal = () => {
     return (ball["x"]) < players["separationFromCorners"]
 }
 //-----------------------------------------------------------------------EXECUTES IN 60FPS-------------------------------------------------------------------------------
+//
 const play = (ctx) => {
     setInterval(() => {
+        //Neither player 1 nor player 2 has win
         if (score["player1"] < settings["pointsToWin"] && score["player2"] < settings["pointsToWin"]) {
+
+            //Ball limits
             let ballRightLimit = ball["x"] + 2 * ball["radius"] + 2
             let ballLeftLimit = ball["x"] - 2
             let ballTopLimit = ball["y"] - 2
             let ballBottomLimit = ball["y"] + 2 * ball["radius"] + 2
 
+            //If the ball hits top or bottom ball vertical velocity is inverted
             if (bottomHitting(ballBottomLimit)) {
                 ball["vy"] = -ball["vy"]
             }
@@ -215,29 +226,34 @@ const play = (ctx) => {
                 ball["vy"] = -ball["vy"]
             }
 
+            //If the ball is going right
             if (ball["vx"] > 0) {
+                //And player2 hits it
                 if (player2Hitting(ballRightLimit)) {
-                    //alert("hit")
+                    //If it´s the first touch, ball horizontal velocity is inverted and doubled after that touch
                     if (settings["firstTouch"]) {
                         ball["vx"] = -2 * ball["vx"]
                         settings["firstTouch"] = false
                     }
+                    //If it's not the first touch, ball horizontal velocity is just inverted
                     else {
                         ball["vx"] = -ball["vx"]
                     }
                 }
+                //If player2 isn't hitting the ball, the ball continues moving till goal
                 else {
                     moveBall(ctx)
                     if (rightGoal()) {
                         //IT WAS PLAYER1 GOAL, SET SCOREBOARD AND THROW ANOTHER BALL
-                        actualizeScore(ctx, "player1")
+                        actualizeScore("player1")
                         initialize(ctx)
                     }
                 }
             }
+
+            //Same logic as before but ball going left, so logic is mirrored
             if (ball["vx"] < 0) {
                 if (player1Hitting(ballLeftLimit)) {
-                    //alert("hit")
                     if (settings["firstTouch"]) {
                         ball["vx"] = -2 * ball["vx"]
                         settings["firstTouch"] = false
@@ -250,13 +266,14 @@ const play = (ctx) => {
                     moveBall(ctx)
                     if (leftGoal()) {
                         //IT WAS PLAYER2 GOAL, SET SCOREBOARD AND THROW ANOTHER BALL
-                        actualizeScore(ctx, "player2")
+                        actualizeScore("player2")
                         initialize(ctx)
                     }
                 }
             }
             movePlayers(ctx)
         }
+        //If one of the players reached the score to win, display who won
         else {
             if (score["player1"] == settings["pointsToWin"]) {
                 document.getElementById("score").innerHTML = "Player 1 won"
