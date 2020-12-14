@@ -5,8 +5,8 @@ window.onload = () => {
     if (canvas.getContext) {
         alert("Left player (player1) plays with up an down arrows \n Right player (player2) plays with W and S")
         ctx = canvas.getContext('2d')
-        canvas.width = window.innerWidth * 0.8
-        canvas.height = window.innerHeight * 0.4
+        canvas.width = window.innerWidth * 0.6
+        canvas.height = window.innerHeight * 0.6
         canvasObj["width"] = canvas.getAttribute("width")
         canvasObj["height"] = canvas.getAttribute("height")
 
