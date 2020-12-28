@@ -5,49 +5,17 @@ window.onload = () => {
     if (canvas.getContext) {
         alert("Left player (player1) plays with up an down arrows \n Right player (player2) plays with W and S")
         ctx = canvas.getContext('2d')
-        canvas.width = window.innerWidth * 0.6
-        canvas.height = window.innerHeight * 0.6
-        canvasObj["width"] = canvas.getAttribute("width")
-        canvasObj["height"] = canvas.getAttribute("height")
-
-        player1 = {
-            "x": players["separationFromCorners"],
-            "y": (canvasObj["height"] / 2) - players["height"] / 2,
-        }
-        player2 = {
-            "x": canvasObj["width"] - players["width"] - players["separationFromCorners"],
-            "y": (canvasObj["height"] / 2) - players["height"] / 2,
-        }
-        settings = {
-            "playVelocity": 3,
-            "playersVelocity": canvasObj["height"]/100,
-            "pointsToWin": 5,
-            "firstTouch": true,
-            "maxBottom": canvasObj["height"] - players["height"],
-            "leftLimit": player1["x"] + players["width"] + ball["vx"] + ball["radius"],
-            "rightLimit": canvasObj["width"] - (canvasObj["width"] - player2["x"] + 2),
-            "bottomLimit": canvasObj["height"],
-            "topLimit": 0,
-            "velocityFactor": (canvasObj["width"] / 2 - 2 * ball["radius"] - (canvasObj["width"] - player2["x"] + 2)) * 0.5
-        }
-        score = {
-            "player1": 0,
-            "player2": 0,
-        }
         initialize(ctx)
         play(ctx)
     }
     else {
         alert("Sorry, due to your browser being not compatible you won't be able to play")
     }
-
-    // @media screen and (max-width: 450px) {
-    // @media screen and (min-width: 451px) {
-    // @media screen and (min-width: 1200px) {
-
 }
 
 let canvas = document.getElementById("gameContainer")
+canvas.width = window.innerWidth * 0.8
+canvas.height = window.innerHeight * 0.4
 
 let canvasObj = {
     "width": canvas.getAttribute("width"),
