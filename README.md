@@ -1,4 +1,4 @@
-## Pong Game (1vs1) :tennis:  Hosted at -> https://diego-kleinman.github.io/
+## Pong Game (1vs1) :tennis:  Hosted on -> https://diego-kleinman.github.io/
 Two players Pong game using Js/CSS/HTML
 
 ## Inglés/English:
